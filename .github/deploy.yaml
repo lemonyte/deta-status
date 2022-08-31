@@ -1,0 +1,44 @@
+name: Deploy to Deta
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Dashboard
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'dashboard'
+          deta-project: 'deta-status'
+          deta-project-dir: './dashboard'
+
+      - name: Deploy Tester - US
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'server'
+          deta-project: 'deta-status-us'
+          deta-project-dir: './tester'
+
+      - name: Deploy Tester - Europe
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'server'
+          deta-project: 'deta-status-europe'
+          deta-project-dir: './tester'
+
+      - name: Deploy Tester - Asia
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'server'
+          deta-project: 'deta-status-asia'
+          deta-project-dir: './tester'
