@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <title>{% block title %}Deta Status{% endblock %}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="/static/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" type="text/css" href="/static/style.css" />
+  {% endblock %}
+</head>
+
+<body>
+  <nav class="navbar w3-bar w3-card w3-top">
+    {% block navbar %}
+    <a href="/" class="w3-bar-item w3-button">
+      <span class="icon"><i class="fa fa-heartbeat"></i></span>
+      Status
+    </a>
+    <a href="/api" class="w3-bar-item w3-button">
+      <span class="icon"><i class="fa fa-code"></i></span>
+      API
+    </a>
+    <a href="https://github.com/LemonPi314/deta-status" class="w3-bar-item w3-button">
+      <span class="icon"><i class="fa fa-github"></i></span>
+      GitHub
+    </a>
+    {% endblock %}
+  </nav>
+
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <footer>
+    {% block footer %}
+    <p>
+      This service is unofficial and not affiliated with
+      <a href="https://deta.sh/">Deta</a> or Abstract Computing UG.
+      <br>
+      Deta logo is used with permission from Deta.
+    </p>
+    {% endblock %}
+  </footer>
+
+  {% block scripts %}
+  <script src="/static/script.js"></script>
+  {% endblock %}
+</body>
+
+</html>

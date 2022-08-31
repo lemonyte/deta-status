@@ -1,0 +1,30 @@
+:root {
+  color-scheme: dark;
+  color: #e0e0e0;
+  background-color: #1e1e1e;
+  font-family: monospace;
+}
+
+footer {
+  padding: 10px;
+  color: #858585;
+  text-align: center;
+}
+
+.icon {
+  padding-left: 3px;
+  padding-right: 5px;
+}
+
+.navbar {
+  color: #ffffff;
+  background-color: #ef39a8;
+}
+
+#content {
+  text-align: center;
+  /* FIXME: magic numbers */
+  min-height: calc(100vh - 50px - 95px);
+  height: fit-content;
+  margin: 50px 25vw 0px 25vw;
+}

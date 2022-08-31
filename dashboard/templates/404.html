@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h1 style="font-family: monospace;">404 - Not Found</h1>
+  <p>If only there was a status page for this status page...</p>
+  <img id="image" style="max-height: 600px; max-width: 600px; height: auto; width: auto;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+  fetch("https://api.waifu.pics/sfw/waifu")
+    .then((response) => { return response.json(); })
+    .then((data) => { document.getElementById("image").src = data.url; });
+</script>
+{% endblock %}

@@ -1,12 +1,15 @@
 import functools
 import os
 import time
+import traceback
 
 from deta import Deta
 from deta.base import FetchResponse
 from dotenv import load_dotenv
+from requests_futures.sessions import FuturesSession
 
 load_dotenv()
+session = FuturesSession()
 
 
 class TestFailure(Exception):
@@ -25,55 +28,55 @@ def test(func):
 
 
 class Tests:
-    def __init__(self, service: str, test_name: str, results_base_name: str):
-        key = os.getenv('DETA_PROJECT_KEY')
-        if not key:
-            raise ValueError('no project key provided')
+    def __init__(self, service: str):
         if not service:
-            raise ValueError('no service name provided')
-        if not test_name:
-            raise ValueError('no test component name provided')
-        if not results_base_name:
-            raise ValueError('no results base name provided')
+            raise ValueError("service name must be a non-empty string")
+        region = os.getenv('REGION')
+        if not region:
+            raise ValueError("no region provided")
+        key = os.getenv(f"DETA_PROJECT_KEY_{region.upper()}")
+        if not key:
+            raise ValueError("no project key provided")
         self.service = service
-        self.test_name = test_name
+        self.region = region
         self.tests = []
         self.deta = Deta(key)
-        self.results_base = self.deta.Base(results_base_name)
 
     def run(self):
-        if not self.tests:
-            raise NotImplementedError
+        details = {}
+        start_time = time.perf_counter()
         try:
             for test in self.tests:
                 test()
-            self.save_result(True)
-            self.close()
+            passed = True
         except Exception:
-            self.save_result(False)
-            self.close()
-            raise
+            passed = False
+            details['error'] = {'traceback': traceback.format_exc()}
+        result = self.save_result(passed, time.perf_counter() - start_time, details)
+        self.close()
+        return result
 
     def close(self):
-        raise NotImplementedError
+        pass
 
-    def save_result(self, result: bool):
-        if not self.service:
-            raise NotImplementedError
-        self.results_base.put(
-            {
-                'key': f'{int(time.time())}-{self.service}',
-                'service': self.service,
-                'passed': result,
-                'timestamp': int(time.time()),
-            }
-        )
+    def save_result(self, result: bool, duration: float, details: dict):
+        headers = {'Authorization': os.getenv('DETA_PROJECT_KEY_DASHBOARD')}
+        data = {
+            'service': self.service,
+            'region': self.region,
+            'passed': result,
+            'timestamp': int(time.time()),
+            'duration': round(duration, 10),
+            'details': details,
+        }
+        session.post('https://service-status.deta.dev/api/save', json=data, headers=headers)
+        return data
 
 
-class DetaBaseTests(Tests):
-    def __init__(self, test_name: str, results_base_name: str):
-        super().__init__('base', test_name, results_base_name)
-        self.test_base = self.deta.Base(self.test_name)
+class BaseTests(Tests):
+    def __init__(self):
+        super().__init__('base')
+        self.test_base = self.deta.Base('test-base')
         self.tests = [
             self.test_put,
             self.test_insert,
@@ -87,7 +90,6 @@ class DetaBaseTests(Tests):
         items = self.test_base.fetch().items
         for item in items:
             self.test_base.delete(item['key'])
-        self.test_base.client.close()
 
     @test
     def test_put(self):
@@ -130,10 +132,10 @@ class DetaBaseTests(Tests):
         assert self.test_base.get(item['key']) == expected
 
 
-class DetaDriveTests(Tests):
-    def __init__(self, test_name: str, results_base_name: str):
-        super().__init__('drive', test_name, results_base_name)
-        self.test_drive = self.deta.Drive(self.test_name)
+class DriveTests(Tests):
+    def __init__(self):
+        super().__init__('drive')
+        self.test_drive = self.deta.Drive('test-drive')
         self.tests = [
             # self.test_put,
             # self.test_delete,
@@ -173,3 +175,9 @@ class DetaDriveTests(Tests):
         assert self.test_drive.get(item['name']).read().decode() == item['content']
         assert item['name'] in self.test_drive.list()['names']
         assert self.test_drive.delete(item['name']) == item['name']
+
+
+class MicroTests(Tests):
+    def __init__(self):
+        super().__init__('micro')
+        self.tests = []
