@@ -27,7 +27,8 @@ jobs:
           deta-project: 'deta-status-us'
           deta-project-dir: './tester'
 
-      - run: rm -rf ./tester/tmp
+      - name: Clean up temporary files
+        run: rm -rf ./tester/tmp
 
       - name: Deploy Tester - Europe
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
@@ -37,7 +38,8 @@ jobs:
           deta-project: 'deta-status-europe'
           deta-project-dir: './tester'
 
-      - run: rm -rf ./tester/tmp
+      - name: Clean up temporary files
+        run: rm -rf ./tester/tmp
 
       - name: Deploy Tester - Asia
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
