@@ -27,6 +27,8 @@ jobs:
           deta-project: 'deta-status-us'
           deta-project-dir: './tester'
 
+      - run: rm -rf ./tester/tmp
+
       - name: Deploy Tester - Europe
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
@@ -34,6 +36,8 @@ jobs:
           deta-name: 'server'
           deta-project: 'deta-status-europe'
           deta-project-dir: './tester'
+
+      - run: rm -rf ./tester/tmp
 
       - name: Deploy Tester - Asia
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
