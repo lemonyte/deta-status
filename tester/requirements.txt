@@ -1,4 +1,4 @@
-fastapi==0.79.0
+fastapi==0.81.0
 deta==1.1.0
 requests-futures==1.0.0
 python-dotenv==0.20.0
