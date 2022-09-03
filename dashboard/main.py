@@ -2,7 +2,6 @@ import os
 import time
 
 from deta import Deta
-from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -10,7 +9,6 @@ from fastapi.templating import Jinja2Templates
 
 from models import Result
 
-load_dotenv()
 token = os.getenv('DETA_PROJECT_KEY_DASHBOARD')
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')

@@ -5,10 +5,8 @@ import traceback
 
 from deta import Deta
 from deta.base import FetchResponse
-from dotenv import load_dotenv
 from requests_futures.sessions import FuturesSession
 
-load_dotenv()
 session = FuturesSession()
 
 
