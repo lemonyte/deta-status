@@ -2,7 +2,7 @@
   color-scheme: dark;
   color: #e0e0e0;
   background-color: #1e1e1e;
-  font-family: monospace;
+  font-family: Verdana, sans-serif;
 }
 
 footer {
@@ -22,9 +22,10 @@ footer {
 }
 
 #content {
-  text-align: center;
   /* FIXME: magic numbers */
   min-height: calc(100vh - 50px - 95px);
   height: fit-content;
   margin: 50px 25vw 0px 25vw;
+  font-family: monospace;
+  text-align: center;
 }
