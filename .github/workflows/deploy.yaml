@@ -19,7 +19,7 @@ jobs:
           deta-project: 'deta-status'
           deta-project-dir: './dashboard'
 
-      - name: Deploy Tester - US
+      - name: Deploy Tester - North America (US)
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
@@ -41,10 +41,32 @@ jobs:
       - name: Clean up temporary files
         run: rm -rf ./tester/tmp
 
-      - name: Deploy Tester - Asia
+      - name: Deploy Tester - Asia (Singapore)
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
           deta-name: 'server'
           deta-project: 'deta-status-asia'
+          deta-project-dir: './tester'
+
+      - name: Clean up temporary files
+        run: rm -rf ./tester/tmp
+
+      - name: Deploy Tester - Asia (India)
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'server'
+          deta-project: 'deta-status-asia-india'
+          deta-project-dir: './tester'
+
+      - name: Clean up temporary files
+        run: rm -rf ./tester/tmp
+
+      - name: Deploy Tester - South America (Brazil)
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_TOKEN }}
+          deta-name: 'server'
+          deta-project: 'deta-status-brazil'
           deta-project-dir: './tester'
