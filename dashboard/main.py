@@ -2,7 +2,7 @@ import os
 import time
 
 from deta import Deta
-from fastapi import FastAPI, HTTPException, Request, Header
+from fastapi import FastAPI, HTTPException, Request, Header, Response
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -29,6 +29,20 @@ async def root(request: Request):
 @app.get('/api')
 def api(request: Request):
     return templates.TemplateResponse('api.html', {'request': request})
+
+
+@app.get('/api/results', response_model=list[Result])
+def api_results(response: Response, service: str = '', region: str = ''):
+    query = {}
+    if service:
+        query['service'] = service
+    if region:
+        query['region'] = region
+    results = results_base.fetch(query=query).items
+    for result in results:
+        del result['key']
+    response.headers['Access-Control-Allow-Origin'] = '*'  # FIXME: temporary
+    return [Result.parse_obj(result) for result in results]
 
 
 @app.post('/api/save', status_code=201)
