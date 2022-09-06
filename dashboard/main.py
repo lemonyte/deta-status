@@ -27,12 +27,12 @@ async def root(request: Request):
 
 
 @app.get('/api')
-def api(request: Request):
+async def api(request: Request):
     return templates.TemplateResponse('api.html', {'request': request})
 
 
 @app.get('/api/results', response_model=list[Result])
-def api_results(response: Response, service: str = '', region: str = ''):
+async def api_results(response: Response, service: str = '', region: str = ''):
     query = {}
     if service:
         query['service'] = service
