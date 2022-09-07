@@ -50,7 +50,7 @@ async def api_save(result: Result, authorization: str = Header(default='')):
     if authorization != token:
         raise HTTPException(status_code=401)
     key = f"{result.timestamp}-{result.service}-{result.region}"
-    results_base.put(result.dict(), key=key)
+    results_base.put(result.dict(), key=key, expire_in=60 * 60 * 24 * 90)
 
 
 @app.exception_handler(404)
