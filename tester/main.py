@@ -10,7 +10,6 @@ from models import Result
 
 app = App(FastAPI())
 deta = Deta()
-results_base = deta.Base('results')
 tests = {
     'base': BaseTests,
     'drive': DriveTests,
@@ -23,14 +22,12 @@ async def root():
     return RedirectResponse('https://service-status.deta.dev/')
 
 
-@app.get('/api/results', response_model=list[Result])
-async def api_results(response: Response, service: str = '', region: str = ''):
-    query = {}
-    if service:
-        query['service'] = service
-    if region:
-        query['region'] = region
-    results = results_base.fetch(query=query).items
+@app.get('/api/results/{service}', response_model=list[Result])
+async def api_results(response: Response, service: str):
+    if service not in tests.keys():
+        raise HTTPException(status_code=400, detail='invalid service')
+    results_base = deta.Base(f'results-{service}')
+    results = results_base.fetch().items
     for result in results:
         del result['key']
     response.headers['Access-Control-Allow-Origin'] = '*'  # FIXME: temporary
