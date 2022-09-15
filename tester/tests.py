@@ -5,9 +5,6 @@ import traceback
 
 from deta import Deta
 from deta.base import FetchResponse
-from requests_futures.sessions import FuturesSession
-
-session = FuturesSession()
 
 
 class TestFailure(Exception):
@@ -32,13 +29,10 @@ class Tests:
         region = os.getenv('REGION')
         if not region:
             raise ValueError("no region provided")
-        key = os.getenv(f"DETA_PROJECT_KEY_{region.upper()}")
-        if not key:
-            raise ValueError("no project key provided")
         self.service = service
         self.region = region
         self.tests = []
-        self.deta = Deta(key)
+        self.deta = Deta()
 
     def run(self):
         details = {}
@@ -58,7 +52,6 @@ class Tests:
         pass
 
     def save_result(self, result: bool, duration: float, details: dict):
-        headers = {'Authorization': os.getenv('DETA_PROJECT_KEY_DASHBOARD')}
         data = {
             'service': self.service,
             'region': self.region,
@@ -67,7 +60,9 @@ class Tests:
             'duration': round(duration, 10),
             'details': details,
         }
-        session.post('https://service-status.deta.dev/api/save', json=data, headers=headers)
+        results_base = self.deta.Base('results')
+        key = f"{data['timestamp']}-{data['service']}-{data['region']}"
+        results_base.put(data, key=key, expire_in=60 * 60 * 24 * 1)
         return data
 
 
@@ -179,3 +174,4 @@ class MicroTests(Tests):
     def __init__(self):
         super().__init__('micro')
         self.tests = []
+        # placeholder micro test
