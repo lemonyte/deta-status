@@ -111,7 +111,7 @@ class BaseTests(Tests):
             {'key': 'test_fetch', 'content': 'testing fetch'},
             {'key': 'test_fetch2', 'content': 'also testing fetch'},
         ]
-        self.test_base.put_many(items)
+        self.test_base.put_many(items)  # type: ignore
         resp = self.test_base.fetch({'content?contains': 'fetch'})
         expected = FetchResponse(2, None, items)
         assert resp == expected
@@ -137,7 +137,7 @@ class DriveTests(Tests):
         ]
 
     def close(self):
-        names = self.test_drive.list()['names']
+        names = self.test_drive.list()['names']  # type: ignore
         if names:
             self.test_drive.delete_many(names)
 
@@ -165,8 +165,8 @@ class DriveTests(Tests):
     def test_all(self):
         item = {'name': 'test_all.txt', 'content': 'testing all'}
         assert self.test_drive.put(item['name'], item['content']) == item['name']
-        assert self.test_drive.get(item['name']).read().decode() == item['content']
-        assert item['name'] in self.test_drive.list()['names']
+        assert self.test_drive.get(item['name']).read().decode() == item['content']  # type: ignore
+        assert item['name'] in self.test_drive.list()['names']  # type: ignore
         assert self.test_drive.delete(item['name']) == item['name']
 
 

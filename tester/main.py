@@ -1,6 +1,6 @@
 import os
 
-from deta import App, Deta
+from deta import App, Deta  # type: ignore
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.responses import RedirectResponse
 from requests_futures.sessions import FuturesSession
