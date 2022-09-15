@@ -61,8 +61,7 @@ class Tests:
             'details': details,
         }
         results_base = self.deta.Base(f'results-{self.service}')
-        key = f"{data['timestamp']}-{data['service']}-{data['region']}"
-        results_base.put(data, key=key, expire_in=60 * 60 * 24 * 1)
+        results_base.put(data, key=data['timestamp'], expire_in=60 * 60 * 24 * 1)
         return data
 
 
