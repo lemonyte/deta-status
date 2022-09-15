@@ -4,7 +4,7 @@ __pycache__/
 .vs/
 .idea/
 .deta*/
-*.env
+*.env*
 .venv/
 env/
 [Bb]uild/
