@@ -30,7 +30,7 @@ jobs:
       - name: Clean up temporary files
         run: rm -rf ./tester/tmp
 
-      - name: Deploy Tester - Europe
+      - name: Deploy Tester - Europe (Germany)
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
