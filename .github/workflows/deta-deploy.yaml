@@ -23,7 +23,7 @@ jobs:
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
-          deta-name: 'server'
+          deta-name: 'tester'
           deta-project: 'deta-status-us'
           deta-project-dir: './tester'
 
@@ -34,8 +34,8 @@ jobs:
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
-          deta-name: 'server'
-          deta-project: 'deta-status-europe'
+          deta-name: 'tester'
+          deta-project: 'deta-status-germany'
           deta-project-dir: './tester'
 
       - name: Clean up temporary files
@@ -45,8 +45,8 @@ jobs:
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
-          deta-name: 'server'
-          deta-project: 'deta-status-asia'
+          deta-name: 'tester'
+          deta-project: 'deta-status-singapore'
           deta-project-dir: './tester'
 
       - name: Clean up temporary files
@@ -56,8 +56,8 @@ jobs:
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
-          deta-name: 'server'
-          deta-project: 'deta-status-asia-india'
+          deta-name: 'tester'
+          deta-project: 'deta-status-india'
           deta-project-dir: './tester'
 
       - name: Clean up temporary files
@@ -67,6 +67,6 @@ jobs:
         uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
-          deta-name: 'server'
+          deta-name: 'tester'
           deta-project: 'deta-status-brazil'
           deta-project-dir: './tester'
