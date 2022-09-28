@@ -3,6 +3,7 @@ import os
 import time
 import traceback
 
+import httpx
 from deta import Deta
 from deta.base import FetchResponse
 
@@ -172,5 +173,11 @@ class DriveTests(Tests):
 class MicroTests(Tests):
     def __init__(self):
         super().__init__('micro')
-        self.tests = []
-        # placeholder micro test
+        self.tests = [
+            self.test_ping,
+        ]
+
+    @test
+    def test_ping(self):
+        path = os.getenv('DETA_PATH')
+        _ = httpx.get(f'https://{path}.deta.dev/test/ping')
