@@ -2,18 +2,14 @@ import asyncio
 import os
 
 import httpx
-from deta import Deta
+from deta import App, Deta  # type: ignore
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.responses import RedirectResponse
 
 from tests import BaseTests, DriveTests, MicroTests
 from models import Result
 
-if os.getenv('DETA_RUNTIME'):
-    from deta import App  # type: ignore
-    app = App(FastAPI())
-else:
-    app = FastAPI()
+app = App(FastAPI())
 deta = Deta()
 tests = {
     'base': BaseTests,
@@ -58,7 +54,6 @@ async def start_tests():
             _ = client.get(f'https://{path}.deta.dev/test/{service}')
 
 
-if os.getenv('DETA_RUNTIME'):
-    @app.lib.cron()  # type: ignore
-    def cron(event: str):
-        asyncio.run(start_tests())
+@app.lib.cron()  # type: ignore
+def cron(event: str):
+    asyncio.run(start_tests())
