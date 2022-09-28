@@ -180,4 +180,4 @@ class MicroTests(Tests):
     @test
     def test_ping(self):
         path = os.getenv('DETA_PATH')
-        _ = httpx.get(f'https://{path}.deta.dev/test/ping')
+        _ = httpx.get(f'https://{path}.deta.dev/ping')
