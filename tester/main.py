@@ -26,7 +26,7 @@ async def api_key_auth(request: Request):
 
 @app.get('/')
 async def root():
-    return RedirectResponse('https://service-status.deta.dev/')
+    return RedirectResponse('https://service-status.deta.dev')
 
 
 @app.get('/results/{service}', response_model=list[TestResults])
