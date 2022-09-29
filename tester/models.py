@@ -9,7 +9,7 @@ class TestResult(BaseModel):
 
 
 class TestResults(BaseModel):
-    results: list[TestResult]
+    tests: dict[str, TestResult]
     service: str
     region: str
     timestamp: int

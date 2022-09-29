@@ -23,7 +23,7 @@ def test(func):
             details = {'error': repr(e)}
         duration = time.perf_counter() - start_time
         return TestResult(
-            name=func.__name__,
+            name=func.__name__.lstrip('test_'),
             passed=passed,
             duration=duration,
             details=details
@@ -46,18 +46,18 @@ class Tests:
 
     async def run(self):
         start_time = time.perf_counter()
-        results = await asyncio.gather(*map(lambda t: t(), self.tests))
+        test_results: list[TestResult] = await asyncio.gather(*map(lambda t: t(), self.tests))
         duration = time.perf_counter() - start_time
-        all_results = TestResults(
-            results=results,
+        results = TestResults(
+            tests={r.name: r for r in test_results},
             service=self.service,
             region=self.region,
             timestamp=int(time.time()),
             duration=duration,
         )
-        await self.save_results(all_results)
+        await self.save_results(results)
         await self.close()
-        return all_results
+        return results
 
     async def close(self):
         pass
