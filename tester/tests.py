@@ -72,6 +72,7 @@ class BaseTests(Tests):
         super().__init__('base')
         self.test_base = self.deta.Base('test-base')
         self.tests = [
+            self.test_ping,
             self.test_put,
             self.test_insert,
             self.test_get,
@@ -135,6 +136,7 @@ class DriveTests(Tests):
         super().__init__('drive')
         self.test_drive = self.deta.Drive('test-drive')
         self.tests = [
+            self.test_ping,
             # self.test_put,
             # self.test_delete,
             # self.test_list,
