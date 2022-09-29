@@ -1,10 +1,16 @@
 from pydantic import BaseModel
 
 
-class Result(BaseModel):
-    service: str
-    region: str
+class TestResult(BaseModel):
+    name: str
     passed: bool
-    timestamp: int
     duration: float
     details: dict = {}
+
+
+class TestResults(BaseModel):
+    results: list[TestResult]
+    service: str
+    region: str
+    timestamp: int
+    duration: float

@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException, Response
 from fastapi.responses import RedirectResponse
 
 from tests import BaseTests, DriveTests, MicroTests
-from models import Result
+from models import TestResults
 
 app = App(FastAPI())
 deta = Deta()
@@ -23,7 +23,7 @@ async def root():
     return RedirectResponse('https://service-status.deta.dev/')
 
 
-@app.get('/results/{service}', response_model=list[Result])
+@app.get('/results/{service}', response_model=list[TestResults])
 async def api_results(response: Response, service: str):
     if service not in tests.keys():
         raise HTTPException(status_code=400, detail='invalid service')
@@ -35,23 +35,35 @@ async def api_results(response: Response, service: str):
     return results
 
 
+@app.get('/test')
+async def run_tests():
+    path = os.getenv('DETA_PATH')
+    headers = {'X-API-Key': os.getenv('DETA_PROJECT_KEY') or ''}
+    coros = []
+    async with httpx.AsyncClient() as client:
+        for service in tests.keys():
+            coros.append(client.get(f'https://{path}.deta.dev/test/{service}', headers=headers))
+        return await asyncio.gather(*coros)
+
+    # The above code starts new instances of this Micro for each service test
+    # by calling this Micro's '/test/{service}' endpoint.
+
+    # Alternate way of running the 3 service tests,
+    # without using any self-calling shenanigans, but prone to timeouts.
+
+    # return await asyncio.gather(*map(test, tests.keys()))
+
+
 @app.get('/test/{service}')
 async def test(service: str):
     if service not in tests.keys():
         raise HTTPException(status_code=404)
-    return tests[service]().run()
+    return await tests[service]().run()
 
 
 @app.get('/ping')
 async def ping():
     return 'pong'
-
-
-async def run_tests():
-    path = os.getenv('DETA_PATH')
-    urls = [f'https://{path}.deta.dev/test/{service}' for service in tests.keys()]
-    async with httpx.AsyncClient() as client:
-        await asyncio.gather(*map(client.get, urls))
 
 
 @app.lib.cron()
