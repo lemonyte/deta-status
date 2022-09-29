@@ -54,6 +54,6 @@ async def start_tests():
             _ = client.get(f'https://{path}.deta.dev/test/{service}')
 
 
-@app.lib.cron()  # type: ignore
+@app.lib.cron()
 def cron(event: str):
     asyncio.run(start_tests())
