@@ -64,7 +64,7 @@ class Tests:
 
     async def save_results(self, results: TestResults):
         results_base = self.deta.Base(f'results-{self.service}')
-        results_base.put(results.json(), key=str(results.timestamp), expire_in=60 * 60 * 24 * 1)
+        results_base.put(results.dict(), key=str(results.timestamp), expire_in=60 * 60 * 24 * 1)
 
 
 class BaseTests(Tests):
