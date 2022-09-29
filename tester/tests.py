@@ -15,9 +15,12 @@ def test(func):
     async def decorator(*args, **kwargs):
         start_time = time.perf_counter()
         try:
-            await func(*args, **kwargs)
+            details = await func(*args, **kwargs)
+            if details is None:
+                details = {}
+            elif not isinstance(details, dict):
+                details = {'value': details}
             passed = True
-            details = {}
         except Exception as e:
             passed = False
             details = {'error': repr(e)}
@@ -88,7 +91,8 @@ class BaseTests(Tests):
 
     @test
     async def test_ping(self):
-        httpx.get('https://database.deta.sh')
+        response = httpx.get('https://database.deta.sh')
+        return {'response_time': response.elapsed.total_seconds()}
 
     @test
     async def test_put(self):
@@ -150,7 +154,8 @@ class DriveTests(Tests):
 
     @test
     async def test_ping(self):
-        httpx.get('https://drive.deta.sh')
+        response = httpx.get('https://drive.deta.sh')
+        return {'response_time': response.elapsed.total_seconds()}
 
     @test
     async def test_put(self):
@@ -193,4 +198,5 @@ class MicroTests(Tests):
     @test
     async def test_ping(self):
         path = os.getenv('DETA_PATH')
-        httpx.get(f'https://{path}.deta.dev/ping')
+        response = httpx.get(f'https://{path}.deta.dev/ping')
+        return {'response_time': response.elapsed.total_seconds()}
