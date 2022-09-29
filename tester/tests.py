@@ -86,6 +86,10 @@ class BaseTests(Tests):
             self.test_base.delete(item['key'])
 
     @test
+    async def test_ping(self):
+        httpx.get('https://database.deta.sh')
+
+    @test
     async def test_put(self):
         item = {'key': 'test_put', 'content': 'testing put'}
         assert self.test_base.put(item) == item
@@ -141,6 +145,10 @@ class DriveTests(Tests):
         names = self.test_drive.list()['names']  # type: ignore
         if names:
             self.test_drive.delete_many(names)
+
+    @test
+    async def test_ping(self):
+        httpx.get('https://drive.deta.sh')
 
     @test
     async def test_put(self):
