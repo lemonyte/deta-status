@@ -47,13 +47,14 @@ async def ping():
     return 'pong'
 
 
-async def start_tests():
+async def run_tests():
     path = os.getenv('DETA_PATH')
+    urls = [f'https://{path}.deta.dev/test/{service}' for service in tests.keys()]
     async with httpx.AsyncClient() as client:
-        for service in tests.keys():
-            _ = client.get(f'https://{path}.deta.dev/test/{service}')
+        await asyncio.gather(*map(client.get, urls))
 
 
 @app.lib.cron()
 def cron(event: str):
-    asyncio.run(start_tests())
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(run_tests())
