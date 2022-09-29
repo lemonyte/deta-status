@@ -3,7 +3,7 @@ import os
 
 import httpx
 from deta import App, Deta  # type: ignore
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, HTTPException, Request, Response, Depends
 from fastapi.responses import RedirectResponse
 
 from tests import BaseTests, DriveTests, MicroTests
@@ -16,6 +16,12 @@ tests = {
     'drive': DriveTests,
     'micro': MicroTests,
 }
+
+
+async def api_key_auth(request: Request):
+    api_key = request.headers.get('X-API-Key')
+    if api_key != os.getenv('DETA_PROJECT_KEY'):
+        raise HTTPException(status_code=401)
 
 
 @app.get('/')
@@ -35,7 +41,7 @@ async def api_results(response: Response, service: str):
     return results
 
 
-@app.get('/test')
+@app.get('/test', response_model=list[TestResults], dependencies=[Depends(api_key_auth)])
 async def run_tests():
     path = os.getenv('DETA_PATH')
     headers = {'X-API-Key': os.getenv('DETA_PROJECT_KEY') or ''}
@@ -54,7 +60,7 @@ async def run_tests():
     # return await asyncio.gather(*map(test, tests.keys()))
 
 
-@app.get('/test/{service}')
+@app.get('/test/{service}', response_model=TestResults, dependencies=[Depends(api_key_auth)])
 async def test(service: str):
     if service not in tests.keys():
         raise HTTPException(status_code=404)
