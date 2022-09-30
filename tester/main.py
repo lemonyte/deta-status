@@ -49,7 +49,10 @@ async def run_tests():
     async with httpx.AsyncClient() as client:
         for service in tests.keys():
             coros.append(client.get(f'https://{path}.deta.dev/test/{service}', headers=headers))
-        return await asyncio.gather(*coros)
+        try:
+            return await asyncio.gather(*coros)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=repr(e))
 
     # The above code starts new instances of this Micro for each service test
     # by calling this Micro's '/test/{service}' endpoint.
