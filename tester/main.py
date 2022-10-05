@@ -41,16 +41,17 @@ async def api_results(response: Response, service: str):
     return results
 
 
-@app.get('/test', response_model=list[TestResults], dependencies=[Depends(api_key_auth)])
+@app.get('/test', dependencies=[Depends(api_key_auth)])
 async def run_tests():
     path = os.getenv('DETA_PATH')
     headers = {'X-API-Key': os.getenv('DETA_PROJECT_KEY') or ''}
     coros = []
-    async with httpx.AsyncClient() as client:
+    timeout = httpx.Timeout(5.0, read=1.0)
+    async with httpx.AsyncClient(timeout=timeout) as client:
         for service in tests.keys():
             coros.append(client.get(f'https://{path}.deta.dev/test/{service}', headers=headers))
         try:
-            return await asyncio.gather(*coros)
+            await asyncio.gather(*coros, return_exceptions=True)
         except Exception as e:
             raise HTTPException(status_code=500, detail=repr(e))
 
