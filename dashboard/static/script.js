@@ -59,10 +59,9 @@ function responseChart(chart) {
       point: { radius: 0 },
     },
     hoverBackgroundColor: "white",
-    // pointRadius: 0,
+    hoverBorderColor: "rgba(239, 57, 168, 0.4)",
     pointHoverRadius: 4,
-    pointHoverBorderWidth: 2,
-    // pointHitRadius: 10,
+    pointHoverBorderWidth: 6,
     interaction: {
       intersect: false,
       mode: "index",
@@ -90,6 +89,7 @@ function responseChart(chart) {
       datasets: [
         {
           borderColor: "rgb(239, 57, 168)",
+          borderWidth: 2,
           data: [],
         },
       ],
@@ -188,19 +188,19 @@ function externalTooltipHandler(context) {
     (window.innerWidth - context.chart.chartArea.width) / 2 +
     context.tooltip.caretX;
 
-  if (tooltipRightCalc < 90) {
-    tooltipElement.style.marginLeft = `${tooltipRightCalc - 90}px`;
+  if (tooltipRightCalc < 94) {
+    tooltipElement.style.marginLeft = `${tooltipRightCalc - 94}px`;
     tooltipElement.style.setProperty(
       "--margin",
-      `${-10 - (tooltipRightCalc - 90)}px`
+      `${-10 - (tooltipRightCalc - 94)}px`
     );
-  } else if (tooltipLeftCalc < 90) {
+  } else if (tooltipLeftCalc < 94) {
     tooltipElement.style.marginLeft = `${
-      tooltipRightCalc - (window.innerWidth - 90)
+      tooltipRightCalc - (window.innerWidth - 94)
     }px`;
     tooltipElement.style.setProperty(
       "--margin",
-      `${-10 - (tooltipRightCalc - (window.innerWidth - 90))}px`
+      `${-10 - (tooltipRightCalc - (window.innerWidth - 94))}px`
     );
   } else {
     tooltipElement.style.marginLeft = "0px";
@@ -250,20 +250,15 @@ function externalTooltipHandler(context) {
 
 function timestampParse(x) {
   const timestamp = new Date(x * 1000);
-  return (
-    timestamp.toLocaleDateString("default", {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-      weekday: "short",
-    }) +
-    ", " +
-    timestamp.toLocaleTimeString("default", {
-      hour: "2-digit",
-      hourCycle: "h23",
-      minute: "2-digit",
-    })
-  );
+  return `${timestamp.toLocaleDateString("default", {
+    weekday: "short",
+    month: "short",
+    day: "2-digit",
+  })} ${timestamp.getFullYear()}, ${timestamp.toLocaleTimeString("default", {
+    hour: "2-digit",
+    hourCycle: "h23",
+    minute: "2-digit",
+  })}`;
 }
 
 function testsDataParse(x) {

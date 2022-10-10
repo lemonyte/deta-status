@@ -133,10 +133,11 @@ header svg {
   box-shadow: rgba(0, 0, 0, 1) 0px 3px 8px;
   border-radius: 4px;
   transform: translate(-50%, 0);
-  padding: 4px;
+  padding-top: 6px;
   margin-top: 4px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
+  background-color: #121212;
 }
 
 .tooltip__design::before {
