@@ -296,13 +296,16 @@ async function getData(region) {
   const data = await Promise.all(responses.map((r) => r.json()));
 
   const baseTimestamp = data[0].map((x) => x.timestamp);
-  const baseResponseData = data[0].map((x) => parseInt(x.duration * 1000));
+  // const baseResponseData = data[0].map((x) => parseInt(x.duration * 1000));
+  const baseResponseData = data[0].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
   const baseStatusData = data[0].map((x) => testsDataParse(x.tests));
   const driveTimestamp = data[1].map((x) => x.timestamp);
-  const driveResponseData = data[1].map((x) => parseInt(x.duration * 1000));
+  // const driveResponseData = data[1].map((x) => parseInt(x.duration * 1000));
+  const driveResponseData = data[1].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
   const driveStatusData = data[1].map((x) => testsDataParse(x.tests));
   const microTimestamp = data[2].map((x) => x.timestamp);
-  const microResponseData = data[2].map((x) => parseInt(x.duration * 1000));
+  // const microResponseData = data[2].map((x) => parseInt(x.duration * 1000));
+  const microResponseData = data[2].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
   const microStatusData = data[2].map((x) => testsDataParse(x.tests));
 
   fillMissingDataPoints(baseTimestamp, baseResponseData, baseStatusData);
