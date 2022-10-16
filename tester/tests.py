@@ -91,8 +91,17 @@ class BaseTests(Tests):
 
     @test
     async def test_ping(self):
-        response = httpx.get('https://database.deta.sh')
-        return {'response_time': response.elapsed.total_seconds()}
+        response_times = []
+        async with httpx.AsyncClient() as client:
+            # Ignore the first response time, which is much higher due to intial handshakes.
+            await client.get('https://database.deta.sh')
+            for i in range(10):
+                response = await client.get('https://database.deta.sh')
+                response_times.append(response.elapsed.total_seconds())
+        return {
+            'response_times': response_times,
+            'average_response_time': sum(response_times) / len(response_times),
+        }
 
     @test
     async def test_put(self):
@@ -154,8 +163,17 @@ class DriveTests(Tests):
 
     @test
     async def test_ping(self):
-        response = httpx.get('https://drive.deta.sh')
-        return {'response_time': response.elapsed.total_seconds()}
+        response_times = []
+        async with httpx.AsyncClient() as client:
+            # Ignore the first response time, which is much higher due to intial handshakes.
+            await client.get('https://drive.deta.sh')
+            for i in range(10):
+                response = await client.get('https://drive.deta.sh')
+                response_times.append(response.elapsed.total_seconds())
+        return {
+            'response_times': response_times,
+            'average_response_time': sum(response_times) / len(response_times),
+        }
 
     @test
     async def test_put(self):
@@ -198,5 +216,14 @@ class MicroTests(Tests):
     @test
     async def test_ping(self):
         path = os.getenv('DETA_PATH')
-        response = httpx.get(f'https://{path}.deta.dev/ping')
-        return {'response_time': response.elapsed.total_seconds()}
+        response_times = []
+        async with httpx.AsyncClient() as client:
+            # Ignore the first response time, which is much higher due to intial handshakes.
+            await client.get(f'https://{path}.deta.dev/ping')
+            for i in range(10):
+                response = await client.get(f'https://{path}.deta.dev/ping')
+                response_times.append(response.elapsed.total_seconds())
+        return {
+            'response_times': response_times,
+            'average_response_time': sum(response_times) / len(response_times),
+        }
