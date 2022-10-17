@@ -33,10 +33,7 @@ function responseChart(chart) {
           try {
             if (labelTime[context].endsWith("00:00")) {
               return labelTime[context].split(",")[1].slice(0, -5);
-            } else if (
-              labelTime[context].endsWith(":00") &&
-              parseInt(labelTime[context].slice(-5)) % 3 == 0
-            ) {
+            } else if (labelTime[context].endsWith(":00") && parseInt(labelTime[context].slice(-5)) % 3 == 0) {
               return labelTime[context].split(",")[2];
             }
           } catch (error) {}
@@ -181,27 +178,15 @@ function externalTooltipHandler(context) {
     return;
   }
 
-  let tooltipRightCalc =
-    (window.innerWidth + context.chart.chartArea.width) / 2 -
-    context.tooltip.caretX;
-  let tooltipLeftCalc =
-    (window.innerWidth - context.chart.chartArea.width) / 2 +
-    context.tooltip.caretX;
+  let tooltipRightCalc = (window.innerWidth + context.chart.chartArea.width) / 2 - context.tooltip.caretX;
+  let tooltipLeftCalc = (window.innerWidth - context.chart.chartArea.width) / 2 + context.tooltip.caretX;
 
   if (tooltipRightCalc < 94) {
     tooltipElement.style.marginLeft = `${tooltipRightCalc - 94}px`;
-    tooltipElement.style.setProperty(
-      "--margin",
-      `${-10 - (tooltipRightCalc - 94)}px`
-    );
+    tooltipElement.style.setProperty("--margin", `${-10 - (tooltipRightCalc - 94)}px`);
   } else if (tooltipLeftCalc < 94) {
-    tooltipElement.style.marginLeft = `${
-      tooltipRightCalc - (window.innerWidth - 94)
-    }px`;
-    tooltipElement.style.setProperty(
-      "--margin",
-      `${-10 - (tooltipRightCalc - (window.innerWidth - 94))}px`
-    );
+    tooltipElement.style.marginLeft = `${tooltipRightCalc - (window.innerWidth - 94)}px`;
+    tooltipElement.style.setProperty("--margin", `${-10 - (tooltipRightCalc - (window.innerWidth - 94))}px`);
   } else {
     tooltipElement.style.marginLeft = "0px";
     tooltipElement.style.setProperty("--margin", "-10px");
@@ -243,8 +228,7 @@ function externalTooltipHandler(context) {
 
     const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
     tooltipElement.style.left = positionX + tooltip.caretX + "px";
-    tooltipElement.style.font =
-      tooltip.options.padding + "px" + tooltip.options.padding + "px";
+    tooltipElement.style.font = tooltip.options.padding + "px" + tooltip.options.padding + "px";
   }
 }
 
@@ -316,15 +300,11 @@ async function getData(region) {
   baseResponseTime = baseResponseData.slice(-144);
   baseUptimeData = baseStatusData.slice(-144);
 
-  driveTimestampLabel = driveTimestamp
-    .slice(-144)
-    .map((x) => timestampParse(x));
+  driveTimestampLabel = driveTimestamp.slice(-144).map((x) => timestampParse(x));
   driveResponseTime = driveResponseData.slice(-144);
   driveUptimeData = driveStatusData.slice(-144);
 
-  microTimestampLabel = microTimestamp
-    .slice(-144)
-    .map((x) => timestampParse(x));
+  microTimestampLabel = microTimestamp.slice(-144).map((x) => timestampParse(x));
   microResponseTime = microResponseData.slice(-144);
   microUptimeData = microStatusData.slice(-144);
 
@@ -433,49 +413,25 @@ function chartUpdate(margin, region) {
   currentDataMargin = margin;
   currentSelectedRegion = region;
 
-  baseResponseChart.data.labels = baseUptimeChart.data.labels =
-    baseTimestampLabel.slice(-margin);
-  driveResponseChart.data.labels = driveUptimeChart.data.labels =
-    driveTimestampLabel.slice(-margin);
-  microResponseChart.data.labels = microUptimeChart.data.labels =
-    microTimestampLabel.slice(-margin);
+  baseResponseChart.data.labels = baseUptimeChart.data.labels = baseTimestampLabel.slice(-margin);
+  driveResponseChart.data.labels = driveUptimeChart.data.labels = driveTimestampLabel.slice(-margin);
+  microResponseChart.data.labels = microUptimeChart.data.labels = microTimestampLabel.slice(-margin);
 
   baseResponseChart.data.datasets[0].data = baseResponseTime.slice(-margin);
   driveResponseChart.data.datasets[0].data = driveResponseTime.slice(-margin);
   microResponseChart.data.datasets[0].data = microResponseTime.slice(-margin);
 
-  averageResponseTime(
-    "avg-response-time__base",
-    baseResponseTime.slice(-margin)
-  );
-  averageResponseTime(
-    "avg-response-time__drive",
-    driveResponseTime.slice(-margin)
-  );
-  averageResponseTime(
-    "avg-response-time__micro",
-    microResponseTime.slice(-margin)
-  );
+  averageResponseTime("avg-response-time__base", baseResponseTime.slice(-margin));
+  averageResponseTime("avg-response-time__drive", driveResponseTime.slice(-margin));
+  averageResponseTime("avg-response-time__micro", microResponseTime.slice(-margin));
 
-  baseUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(
-    baseUptimeData.slice(-margin)
-  );
-  driveUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(
-    driveUptimeData.slice(-margin)
-  );
-  microUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(
-    microUptimeData.slice(-margin)
-  );
+  baseUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(baseUptimeData.slice(-margin));
+  driveUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(driveUptimeData.slice(-margin));
+  microUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(microUptimeData.slice(-margin));
 
-  baseUptimeChart.data.datasets[0].data = Array(
-    baseUptimeData.slice(-margin).length
-  ).fill(1);
-  driveUptimeChart.data.datasets[0].data = Array(
-    driveUptimeData.slice(-margin).length
-  ).fill(1);
-  microUptimeChart.data.datasets[0].data = Array(
-    microUptimeData.slice(-margin).length
-  ).fill(1);
+  baseUptimeChart.data.datasets[0].data = Array(baseUptimeData.slice(-margin).length).fill(1);
+  driveUptimeChart.data.datasets[0].data = Array(driveUptimeData.slice(-margin).length).fill(1);
+  microUptimeChart.data.datasets[0].data = Array(microUptimeData.slice(-margin).length).fill(1);
 
   uptimeChartFooter(baseUptimeData, "uptime-chart__percentage__base");
   uptimeChartFooter(driveUptimeData, "uptime-chart__percentage__drive");
@@ -496,12 +452,8 @@ function chartUpdate(margin, region) {
 }
 
 function uptimeChartFooter(statusData, elementID) {
-  const allPassCount = statusData
-    .slice(-currentDataMargin)
-    .reduce((a, v) => (v === 1 ? a + 1 : a), 0);
-  const uptimePercentage = parseFloat(
-    (allPassCount / currentDataMargin) * 100
-  ).toFixed(2);
+  const allPassCount = statusData.slice(-currentDataMargin).reduce((a, v) => (v === 1 ? a + 1 : a), 0);
+  const uptimePercentage = parseFloat((allPassCount / currentDataMargin) * 100).toFixed(2);
   document.getElementById(elementID).innerHTML = uptimePercentage + " % uptime";
 }
 
