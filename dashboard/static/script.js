@@ -1,16 +1,3 @@
-let baseTimestampLabel = [],
-  baseResponseTime = [],
-  baseUptimeData = [],
-  driveTimestampLabel = [],
-  driveResponseTime = [],
-  driveUptimeData = [],
-  microTimestampLabel = [],
-  microResponseTime = [],
-  microUptimeData = [];
-
-let currentDataMargin = 0;
-let currentSelectedRegion = "";
-
 function responseChart(chart) {
   const scales = {
     x: {
@@ -311,14 +298,6 @@ async function getData(region) {
   currentStatusUpdate();
 }
 
-const baseResponseChart = responseChart("response-chart__base");
-const driveResponseChart = responseChart("response-chart__drive");
-const microResponseChart = responseChart("response-chart__micro");
-
-const baseUptimeChart = uptimeChart("uptime-chart__base");
-const driveUptimeChart = uptimeChart("uptime-chart__drive");
-const microUptimeChart = uptimeChart("uptime-chart__micro");
-
 function currentStatusUpdate() {
   const currentStatusStyle = document.getElementById("current-status");
   const currentStatus = document.getElementById("current-status__text");
@@ -388,15 +367,6 @@ function averageResponseTime(htmlID, responseTime) {
   document.getElementById(htmlID).innerHTML = `${Math.round(average)} ms`;
 }
 
-const chartList = [
-  baseResponseChart,
-  baseUptimeChart,
-  driveResponseChart,
-  driveUptimeChart,
-  microResponseChart,
-  microUptimeChart,
-];
-
 function dataMargin() {
   const currentWidth = window.innerWidth;
   if (currentWidth <= 650) {
@@ -457,8 +427,38 @@ function uptimeChartFooter(statusData, elementID) {
   document.getElementById(elementID).innerHTML = uptimePercentage + " % uptime";
 }
 
-document.getElementById("radio--germany").click();
+let baseTimestampLabel = [],
+  baseResponseTime = [],
+  baseUptimeData = [],
+  driveTimestampLabel = [],
+  driveResponseTime = [],
+  driveUptimeData = [],
+  microTimestampLabel = [],
+  microResponseTime = [],
+  microUptimeData = [];
+
+let currentDataMargin = 0;
+let currentSelectedRegion = "";
+
+const baseResponseChart = responseChart("response-chart__base");
+const driveResponseChart = responseChart("response-chart__drive");
+const microResponseChart = responseChart("response-chart__micro");
+
+const baseUptimeChart = uptimeChart("uptime-chart__base");
+const driveUptimeChart = uptimeChart("uptime-chart__drive");
+const microUptimeChart = uptimeChart("uptime-chart__micro");
+
+const chartList = [
+  baseResponseChart,
+  baseUptimeChart,
+  driveResponseChart,
+  driveUptimeChart,
+  microResponseChart,
+  microUptimeChart,
+];
 
 window.addEventListener("resize", () => {
   chartUpdate(dataMargin(), currentSelectedRegion);
 });
+
+document.getElementById("radio--germany").click();
