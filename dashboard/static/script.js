@@ -405,9 +405,9 @@ function uptimeBackgroundColor(statusData) {
 }
 
 function averageResponseTime(htmlID, responseTime) {
-  document.getElementById(htmlID).innerHTML = `${parseInt(
-    responseTime.reduce((a, b) => a + b, 0) / responseTime.length
-  )} ms`;
+  responseTime = responseTime.filter((x) => x);
+  average = responseTime.reduce((a, b) => a + b, 0) / responseTime.length;
+  document.getElementById(htmlID).innerHTML = `${Math.round(average)} ms`;
 }
 
 const chartList = [
