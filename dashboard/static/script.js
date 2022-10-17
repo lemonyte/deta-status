@@ -369,15 +369,17 @@ function uptimeTooltipData(chart, data) {
 }
 
 function uptimeBackgroundColor(statusData) {
-  let uptimeColor = [];
+  const uptimeColors = [];
   for (i = 0; i < statusData.length; i++) {
     if (statusData[i] == 1) {
-      uptimeColor.push("rgb(39, 163, 0)");
+      uptimeColors.push("rgb(39, 163, 0)");
+    } else if (statusData[i] == 0) {
+      uptimeColors.push("rgb(186, 12, 12)");
     } else {
-      uptimeColor.push("rgb(186, 12, 12)");
+      uptimeColors.push("rgb(255, 165, 0)");
     }
   }
-  return uptimeColor;
+  return uptimeColors;
 }
 
 function averageResponseTime(htmlID, responseTime) {
