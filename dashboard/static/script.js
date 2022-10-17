@@ -29,10 +29,12 @@ function responseChart(chart) {
     },
 
     y: {
-      // type: "linear",
-      // display: false,
-      // position: "right",
+      position: "left",
       grid: { color: "rgba(52, 58, 64, 0.3)" },
+    },
+
+    y1: {
+      position: "right",
     },
   };
 
@@ -73,6 +75,13 @@ function responseChart(chart) {
           borderColor: "rgb(239, 57, 168)",
           borderWidth: 2,
           data: [],
+          yAxisID: "y",
+        },
+        {
+          borderColor: "rgb(239, 57, 168)",
+          borderWidth: 2,
+          data: [],
+          yAxisID: "y1",
         },
       ],
     },
@@ -385,17 +394,24 @@ function chartUpdate(margin, region) {
   currentDataMargin = margin;
   currentSelectedRegion = region;
 
-  baseResponseChart.data.labels = baseUptimeChart.data.labels = baseTimestampLabel.slice(-margin);
-  driveResponseChart.data.labels = driveUptimeChart.data.labels = driveTimestampLabel.slice(-margin);
-  microResponseChart.data.labels = microUptimeChart.data.labels = microTimestampLabel.slice(-margin);
+  baseResponseChart.data.labels = baseTimestampLabel.slice(-margin);
+  driveResponseChart.data.labels = driveTimestampLabel.slice(-margin);
+  microResponseChart.data.labels = microTimestampLabel.slice(-margin);
 
   baseResponseChart.data.datasets[0].data = baseResponseTime.slice(-margin);
+  baseResponseChart.data.datasets[1].data = baseResponseTime.slice(-margin);
   driveResponseChart.data.datasets[0].data = driveResponseTime.slice(-margin);
+  driveResponseChart.data.datasets[1].data = driveResponseTime.slice(-margin);
   microResponseChart.data.datasets[0].data = microResponseTime.slice(-margin);
+  microResponseChart.data.datasets[1].data = microResponseTime.slice(-margin);
 
   averageResponseTime("avg-response-time__base", baseResponseTime.slice(-margin));
   averageResponseTime("avg-response-time__drive", driveResponseTime.slice(-margin));
   averageResponseTime("avg-response-time__micro", microResponseTime.slice(-margin));
+
+  baseUptimeChart.data.labels = baseTimestampLabel.slice(-margin);
+  driveUptimeChart.data.labels = driveTimestampLabel.slice(-margin);
+  microUptimeChart.data.labels = microTimestampLabel.slice(-margin);
 
   baseUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(baseUptimeData.slice(-margin));
   driveUptimeChart.data.datasets[0].backgroundColor = uptimeBackgroundColor(driveUptimeData.slice(-margin));

@@ -124,6 +124,8 @@ header svg {
 .uptime-chart {
   height: 40px;
   padding-top: 0.4rem;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .tooltip__design {
