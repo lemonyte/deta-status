@@ -342,21 +342,17 @@ const microUptimeChart = uptimeChart("uptime-chart__micro");
 function currentStatusUpdate() {
   const currentStatusStyle = document.getElementById("current-status");
   const currentStatus = document.getElementById("current-status__text");
+  const currentUptime = [baseUptimeData.slice(-1)[0], driveUptimeData.slice(-1)[0], microUptimeData.slice(-1)[0]];
 
-  if (
-    [
-      baseUptimeData.slice(-1)[0],
-      driveUptimeData.slice(-1)[0],
-      microUptimeData.slice(-1)[0],
-    ].every((value) => {
-      return value === 1;
-    })
-  ) {
+  if (currentUptime.every((value) => value === 1)) {
     currentStatus.innerHTML = "All Systems Operational";
     currentStatusStyle.style.backgroundColor = "rgb(39, 163, 0)";
-  } else {
-    currentStatus.innerHTML = "All Systems Are Not Operational";
+  } else if (currentUptime.every((value) => value === 0)) {
+    currentStatus.innerHTML = "All Systems Not Operational";
     currentStatusStyle.style.backgroundColor = "rgb(186, 12, 12)";
+  } else {
+    currentStatus.innerHTML = "Some Systems Not Operational";
+    currentStatusStyle.style.backgroundColor = "rgb(255, 165, 0)";
   }
 }
 
