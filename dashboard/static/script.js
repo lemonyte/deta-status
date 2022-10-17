@@ -1,4 +1,4 @@
-var baseTimestampLabel = [],
+let baseTimestampLabel = [],
   baseResponseTime = [],
   baseUptimeData = [],
   driveTimestampLabel = [],
@@ -8,8 +8,8 @@ var baseTimestampLabel = [],
   microResponseTime = [],
   microUptimeData = [];
 
-var currentDataMargin = 0;
-var currentSelectedRegion = "";
+let currentDataMargin = 0;
+let currentSelectedRegion = "";
 
 function responseChart(chart) {
   const scales = {
@@ -17,8 +17,8 @@ function responseChart(chart) {
       grid: { color: "rgba(52, 58, 64, 0.3)" },
       ticks: {
         // Needs a little bit of work ig
-        callback: function (context) {
-          const labelTime = (function go() {
+        callback: (context) => {
+          const labelTime = (() => {
             if ((chart = "response-chart__base")) {
               return baseTimestampLabel;
             }
@@ -70,9 +70,7 @@ function responseChart(chart) {
       tooltip: {
         displayColors: false,
         callbacks: {
-          label: function (context) {
-            return context.formattedValue + " ms";
-          },
+          label: (context) => context.formattedValue + " ms",
         },
       },
     },
@@ -96,9 +94,9 @@ function responseChart(chart) {
       {
         beforeDraw: (chart) => {
           if (chart.tooltip?._active?.length) {
-            let x = chart.tooltip._active[0].element.x;
-            let yAxis = chart.scales.y;
-            let ctx = chart.ctx;
+            const x = chart.tooltip._active[0].element.x;
+            const yAxis = chart.scales.y;
+            const ctx = chart.ctx;
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(x, yAxis.top);
@@ -178,8 +176,8 @@ function externalTooltipHandler(context) {
     return;
   }
 
-  let tooltipRightCalc = (window.innerWidth + context.chart.chartArea.width) / 2 - context.tooltip.caretX;
-  let tooltipLeftCalc = (window.innerWidth - context.chart.chartArea.width) / 2 + context.tooltip.caretX;
+  const tooltipRightCalc = (window.innerWidth + context.chart.chartArea.width) / 2 - context.tooltip.caretX;
+  const tooltipLeftCalc = (window.innerWidth - context.chart.chartArea.width) / 2 + context.tooltip.caretX;
 
   if (tooltipRightCalc < 94) {
     tooltipElement.style.marginLeft = `${tooltipRightCalc - 94}px`;
@@ -196,6 +194,7 @@ function externalTooltipHandler(context) {
     const titleLines = tooltip.title || [];
     const bodyLines = tooltip.body.map((b) => b.lines);
     const tooltipLI = document.createElement("li");
+    const tooltipUL = tooltipElement.getElementsByClassName("tooltip__ul")[0];
     titleLines.forEach((title) => {
       const tooltipSPAN = document.createElement("span");
       const tooltipTitle = document.createTextNode(title);
@@ -226,39 +225,40 @@ function externalTooltipHandler(context) {
     tooltipLI.appendChild(tooltipBodyP);
     tooltipElement.style.opacity = 1;
 
-    const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-    tooltipElement.style.left = positionX + tooltip.caretX + "px";
+    tooltipElement.style.left = chart.canvas.offsetLeft + tooltip.caretX + "px";
     tooltipElement.style.font = tooltip.options.padding + "px" + tooltip.options.padding + "px";
   }
 }
 
-function timestampParse(x) {
-  const timestamp = new Date(x * 1000);
-  return `${timestamp.toLocaleDateString("default", {
+function parseTimestamp(timestamp) {
+  const time = new Date(timestamp * 1000);
+  return `${time.toLocaleDateString("default", {
     weekday: "short",
     month: "short",
     day: "2-digit",
-  })} ${timestamp.getFullYear()}, ${timestamp.toLocaleTimeString("default", {
+  })} ${time.getFullYear()}, ${time.toLocaleTimeString("default", {
     hour: "2-digit",
     hourCycle: "h23",
     minute: "2-digit",
   })}`;
 }
 
-function testsDataParse(x) {
+function parseTestsData(testsData) {
   let count = 0;
-  for (let key in x) {
-    if (x[key].passed == true) {
+  for (const key in testsData) {
+    if (testsData[key].passed == true) {
       count++;
     }
   }
-  return count / Object.keys(x).length;
+  return count / Object.keys(testsData).length;
 }
 
 function fillMissingDataPoints(timestamp, responseTime, statusData) {
+  let durationGap;
+  let missingDataNumber;
   for (i = 0; i < timestamp.length; i++) {
-    let durationGap = timestamp[i + 1] - timestamp[i];
-    let missingDataNumber = Math.round(durationGap / 600) - 1;
+    durationGap = timestamp[i + 1] - timestamp[i];
+    missingDataNumber = Math.round(durationGap / 600) - 1;
     if (durationGap > 960 && missingDataNumber > 0) {
       while (missingDataNumber > 0) {
         timestamp.splice(i + 1, 0, timestamp[i + 1] - 600);
@@ -282,29 +282,29 @@ async function getData(region) {
   const baseTimestamp = data[0].map((x) => x.timestamp);
   // const baseResponseData = data[0].map((x) => parseInt(x.duration * 1000));
   const baseResponseData = data[0].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
-  const baseStatusData = data[0].map((x) => testsDataParse(x.tests));
+  const baseStatusData = data[0].map((x) => parseTestsData(x.tests));
   const driveTimestamp = data[1].map((x) => x.timestamp);
   // const driveResponseData = data[1].map((x) => parseInt(x.duration * 1000));
   const driveResponseData = data[1].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
-  const driveStatusData = data[1].map((x) => testsDataParse(x.tests));
+  const driveStatusData = data[1].map((x) => parseTestsData(x.tests));
   const microTimestamp = data[2].map((x) => x.timestamp);
   // const microResponseData = data[2].map((x) => parseInt(x.duration * 1000));
   const microResponseData = data[2].map((x) => parseInt(x.tests.ping.details.average_response_time * 1000));
-  const microStatusData = data[2].map((x) => testsDataParse(x.tests));
+  const microStatusData = data[2].map((x) => parseTestsData(x.tests));
 
   fillMissingDataPoints(baseTimestamp, baseResponseData, baseStatusData);
   fillMissingDataPoints(driveTimestamp, driveResponseData, driveStatusData);
   fillMissingDataPoints(microTimestamp, microResponseData, microStatusData);
 
-  baseTimestampLabel = baseTimestamp.slice(-144).map((x) => timestampParse(x));
+  baseTimestampLabel = baseTimestamp.slice(-144).map((x) => parseTimestamp(x));
   baseResponseTime = baseResponseData.slice(-144);
   baseUptimeData = baseStatusData.slice(-144);
 
-  driveTimestampLabel = driveTimestamp.slice(-144).map((x) => timestampParse(x));
+  driveTimestampLabel = driveTimestamp.slice(-144).map((x) => parseTimestamp(x));
   driveResponseTime = driveResponseData.slice(-144);
   driveUptimeData = driveStatusData.slice(-144);
 
-  microTimestampLabel = microTimestamp.slice(-144).map((x) => timestampParse(x));
+  microTimestampLabel = microTimestamp.slice(-144).map((x) => parseTimestamp(x));
   microResponseTime = microResponseData.slice(-144);
   microUptimeData = microStatusData.slice(-144);
 
@@ -356,14 +356,14 @@ async function updateData() {
 }
 
 function uptimeTooltipData(chart, data) {
-  chart.options.plugins.tooltip.callbacks.label = function (context) {
-    x = parseInt(data[context.dataIndex] * 100);
-    if (x == 100) {
+  chart.options.plugins.tooltip.callbacks.label = (context) => {
+    const percentPassed = parseInt(data[context.dataIndex] * 100);
+    if (percentPassed == 100) {
       return "All tests passed.";
-    } else if (x == 0) {
+    } else if (percentPassed == 0) {
       return "All tests failed.";
     } else {
-      return `${x}% of tests passed.`;
+      return `${percentPassed}% of tests passed.`;
     }
   };
 }
@@ -382,7 +382,7 @@ function uptimeBackgroundColor(statusData) {
 
 function averageResponseTime(htmlID, responseTime) {
   responseTime = responseTime.filter((x) => x);
-  average = responseTime.reduce((a, b) => a + b, 0) / responseTime.length;
+  const average = responseTime.reduce((a, b) => a + b, 0) / responseTime.length;
   document.getElementById(htmlID).innerHTML = `${Math.round(average)} ms`;
 }
 
@@ -396,7 +396,7 @@ const chartList = [
 ];
 
 function dataMargin() {
-  let currentWidth = window.innerWidth;
+  const currentWidth = window.innerWidth;
   if (currentWidth <= 650) {
     return 48;
   } else if (currentWidth > 650 && currentWidth <= 1000) {
@@ -446,9 +446,7 @@ function chartUpdate(margin, region) {
   uptimeTooltipData(driveUptimeChart, driveUptimeData.slice(-margin));
   uptimeTooltipData(microUptimeChart, microUptimeData.slice(-margin));
 
-  chartList.forEach((element) => {
-    element.update();
-  });
+  chartList.forEach((element) => element.update());
 }
 
 function uptimeChartFooter(statusData, elementID) {
@@ -459,6 +457,6 @@ function uptimeChartFooter(statusData, elementID) {
 
 document.getElementById("radio--germany").click();
 
-window.addEventListener("resize", function onResize() {
+window.addEventListener("resize", () => {
   chartUpdate(dataMargin(), currentSelectedRegion);
 });
