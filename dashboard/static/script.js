@@ -259,7 +259,7 @@ function fillMissingDataPoints(timestamp, responseTime, statusData) {
       while (missingDataNumber > 0) {
         timestamp.splice(i + 1, 0, timestamp[i + 1] - 600);
         responseTime.splice(i + 1, 0, null);
-        statusData.splice(i + 1, 0, 0);
+        statusData.splice(i + 1, 0, null);
         missingDataNumber--;
       }
     }
@@ -346,7 +346,9 @@ async function updateData() {
 function uptimeTooltipData(chart, data) {
   chart.options.plugins.tooltip.callbacks.label = (context) => {
     const percentPassed = parseInt(data[context.dataIndex] * 100);
-    if (percentPassed == 100) {
+    if (data[context.dataIndex] == null) {
+      return "Tests failed to run.";
+    } else if (percentPassed == 100) {
       return "All tests passed.";
     } else if (percentPassed == 0) {
       return "All tests failed.";
@@ -361,7 +363,7 @@ function uptimeBackgroundColor(statusData) {
   for (i = 0; i < statusData.length; i++) {
     if (statusData[i] == 1) {
       uptimeColors.push("rgb(39, 163, 0)");
-    } else if (statusData[i] == 0) {
+    } else if (statusData[i] == 0 || statusData[i] == null) {
       uptimeColors.push("rgb(186, 12, 12)");
     } else {
       uptimeColors.push("rgb(255, 165, 0)");
