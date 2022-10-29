@@ -16,7 +16,7 @@ jobs:
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
           deta-name: 'dashboard'
-          deta-project: 'deta-status'
+          deta-project: 'deta-status-germany'
           deta-project-dir: './dashboard'
 
       - name: Deploy Tester - US
@@ -24,7 +24,7 @@ jobs:
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }}
           deta-name: 'tester'
-          deta-project: 'deta-status-us'
+          deta-project: 'deta-status-us-2'
           deta-project-dir: './tester'
 
       - name: Clean up temporary files
