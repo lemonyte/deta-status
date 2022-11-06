@@ -324,23 +324,11 @@ function currentStatusUpdate() {
   }
 }
 
-async function updateData() {
-  const GERMANY = document.getElementById("radio--germany");
-  const INDIA = document.getElementById("radio--india");
-  const SINGAPORE = document.getElementById("radio--singapore");
-  const BRAZIL = document.getElementById("radio--brazil");
-  const US = document.getElementById("radio--us");
-
-  const regionsArray = [GERMANY, INDIA, SINGAPORE, BRAZIL, US];
-  let currentRegion = "";
-  for (let i = 0; i < regionsArray.length; i++) {
-    if (regionsArray[i].checked == true) {
-      await getData(`${regionsArray[i].value}`);
-      currentRegion = `${regionsArray[i].value}`;
-    }
-  }
-
-  chartUpdate(dataMargin(), currentRegion);
+async function switchRegion(region) {
+  urlParams.set("region", region);
+  window.history.pushState({}, "", `?${urlParams}`)
+  await getData(region);
+  chartUpdate(dataMargin(), region);
 }
 
 function uptimeTooltipData(chart, data) {
@@ -475,8 +463,22 @@ const chartList = [
   microUptimeChart,
 ];
 
+const regions = [
+  "germany",
+  "india",
+  "singapore",
+  "brazil",
+  "us",
+]
+
 window.addEventListener("resize", () => {
   chartUpdate(dataMargin(), currentSelectedRegion);
 });
 
-document.getElementById("radio--germany").click();
+const urlParams = new URLSearchParams(window.location.search);
+
+if (regions.includes(urlParams.get("region"))) {
+  document.getElementById(`radio--${urlParams.get("region")}`).click();
+} else {
+  document.getElementById(`radio--${regions[0]}`).click();
+}
