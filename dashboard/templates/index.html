@@ -1,179 +1,143 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deta Status</title>
-    <link rel="icon" href="/static/favicon.ico" />
-    <link rel="stylesheet" href="/static/style.css?v=1.0.2" />
-  </head>
+{% extends "base.html" %}
 
-  <body>
-    <header class="container">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 512 512"
-        style="fill: #ef39a8"
-      >
-        <path
-          d="M228.3 469.1L47.6 300.4c-4.2-3.9-8.2-8.1-11.9-12.4h87c22.6 0 43-13.6 51.7-34.5l10.5-25.2 49.3 109.5c3.8 8.5 12.1 14 21.4 14.1s17.8-5 22-13.3L320 253.7l1.7 3.4c9.5 19 28.9 31 50.1 31H476.3c-3.7 4.3-7.7 8.5-11.9 12.4L283.7 469.1c-7.5 7-17.4 10.9-27.7 10.9s-20.2-3.9-27.7-10.9zM503.7 240h-132c-3 0-5.8-1.7-7.2-4.4l-23.2-46.3c-4.1-8.1-12.4-13.3-21.5-13.3s-17.4 5.1-21.5 13.3l-41.4 82.8L205.9 158.2c-3.9-8.7-12.7-14.3-22.2-14.1s-18.1 5.9-21.8 14.8l-31.8 76.3c-1.2 3-4.2 4.9-7.4 4.9H16c-2.6 0-5 .4-7.3 1.1C3 225.2 0 208.2 0 190.9v-5.8c0-69.9 50.5-129.5 119.4-141C165 36.5 211.4 51.4 244 84l12 12 12-12c32.6-32.6 79-47.5 124.6-39.9C461.5 55.6 512 115.2 512 185.1v5.8c0 16.9-2.8 33.5-8.3 49.1z"
-        />
-      </svg>
-      <h1 class="logo">Deta Status</h1>
-    </header>
+{% block content %}
+<header class="container">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    style="fill: #ef39a8"
+  >
+    <path
+      d="M228.3 469.1L47.6 300.4c-4.2-3.9-8.2-8.1-11.9-12.4h87c22.6 0 43-13.6 51.7-34.5l10.5-25.2 49.3 109.5c3.8 8.5 12.1 14 21.4 14.1s17.8-5 22-13.3L320 253.7l1.7 3.4c9.5 19 28.9 31 50.1 31H476.3c-3.7 4.3-7.7 8.5-11.9 12.4L283.7 469.1c-7.5 7-17.4 10.9-27.7 10.9s-20.2-3.9-27.7-10.9zM503.7 240h-132c-3 0-5.8-1.7-7.2-4.4l-23.2-46.3c-4.1-8.1-12.4-13.3-21.5-13.3s-17.4 5.1-21.5 13.3l-41.4 82.8L205.9 158.2c-3.9-8.7-12.7-14.3-22.2-14.1s-18.1 5.9-21.8 14.8l-31.8 76.3c-1.2 3-4.2 4.9-7.4 4.9H16c-2.6 0-5 .4-7.3 1.1C3 225.2 0 208.2 0 190.9v-5.8c0-69.9 50.5-129.5 119.4-141C165 36.5 211.4 51.4 244 84l12 12 12-12c32.6-32.6 79-47.5 124.6-39.9C461.5 55.6 512 115.2 512 185.1v5.8c0 16.9-2.8 33.5-8.3 49.1z"
+    />
+  </svg>
+  <h1 class="logo">Deta Status</h1>
+</header>
 
-    <form>
-      <div class="container switch-field">
-        <input
-          type="radio"
-          id="radio--germany"
-          name="switch-region"
-          onclick="switchRegion(this.value);"
-          value="germany"
-        />
-        <label for="radio--germany">Germany</label>
-        <input
-          type="radio"
-          id="radio--india"
-          name="switch-region"
-          onclick="switchRegion(this.value);"
-          value="india"
-        />
-        <label for="radio--india">India</label>
-        <input
-          type="radio"
-          id="radio--singapore"
-          name="switch-region"
-          onclick="switchRegion(this.value);"
-          value="singapore"
-        />
-        <label for="radio--singapore">Singapore</label>
-        <input
-          type="radio"
-          id="radio--brazil"
-          name="switch-region"
-          onclick="switchRegion(this.value);"
-          value="brazil"
-        />
-        <label for="radio--brazil">Brazil</label>
-        <input
-          type="radio"
-          id="radio--us"
-          name="switch-region"
-          onclick="switchRegion(this.value);"
-          value="us"
-        />
-        <label for="radio--us">US</label>
-      </div>
-    </form>
+<form>
+  <div class="container switch-field">
+    <input
+      type="radio"
+      id="radio--germany"
+      name="switch-region"
+      onclick="switchRegion(this.value);"
+      value="germany"
+    />
+    <label for="radio--germany">Germany</label>
+    <input
+      type="radio"
+      id="radio--india"
+      name="switch-region"
+      onclick="switchRegion(this.value);"
+      value="india"
+    />
+    <label for="radio--india">India</label>
+    <input
+      type="radio"
+      id="radio--singapore"
+      name="switch-region"
+      onclick="switchRegion(this.value);"
+      value="singapore"
+    />
+    <label for="radio--singapore">Singapore</label>
+    <input
+      type="radio"
+      id="radio--brazil"
+      name="switch-region"
+      onclick="switchRegion(this.value);"
+      value="brazil"
+    />
+    <label for="radio--brazil">Brazil</label>
+    <input
+      type="radio"
+      id="radio--us"
+      name="switch-region"
+      onclick="switchRegion(this.value);"
+      value="us"
+    />
+    <label for="radio--us">US</label>
+  </div>
+</form>
 
-    <div class="container current-status" id="current-status">
-      <h3 class="current-status__text" id="current-status__text"></h3>
+<div class="container current-status" id="current-status">
+  <h3 class="current-status__text" id="current-status__text"></h3>
+</div>
+
+<div class="container chart-container">
+  <div>
+    <h2>Base</h2>
+    <div class="avg-response-time">
+      <p>Response time</p>
+      <p id="avg-response-time__base"></p>
     </div>
-
-    <div class="container chart-container">
-      <div>
-        <h2>Base</h2>
-        <div class="avg-response-time">
-          <p>Response time</p>
-          <p id="avg-response-time__base"></p>
-        </div>
-        <div class="response-chart">
-          <canvas id="response-chart__base"></canvas>
-        </div>
-        <p>Uptime tracker</p>
-        <div class="uptime-chart">
-          <canvas id="uptime-chart__base"></canvas>
-        </div>
-        <div class="uptime-chart__footer">
-          <span id="uptime-chart-last__base"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span id="uptime-chart__percentage__base"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span>Now</span>
-        </div>
-      </div>
-
-      <div>
-        <h2>Drive</h2>
-        <div class="avg-response-time">
-          <p>Response time</p>
-          <p id="avg-response-time__drive"></p>
-        </div>
-        <div class="response-chart">
-          <canvas id="response-chart__drive"></canvas>
-        </div>
-        <p>Uptime tracker</p>
-        <div class="uptime-chart">
-          <canvas id="uptime-chart__drive"></canvas>
-        </div>
-        <div class="uptime-chart__footer">
-          <span id="uptime-chart-last__drive"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span id="uptime-chart__percentage__drive"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span>Now</span>
-        </div>
-      </div>
-
-      <div>
-        <h2>Micro</h2>
-        <div class="avg-response-time">
-          <p>Response time</p>
-          <p id="avg-response-time__micro"></p>
-        </div>
-        <div class="response-chart">
-          <canvas id="response-chart__micro"></canvas>
-        </div>
-        <p>Uptime tracker</p>
-        <div class="uptime-chart">
-          <canvas id="uptime-chart__micro"></canvas>
-        </div>
-        <div class="uptime-chart__footer">
-          <span id="uptime-chart-last__micro"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span id="uptime-chart__percentage__micro"></span>
-          <span class="uptime-chart__footer--divider"></span>
-          <span>Now</span>
-        </div>
-      </div>
+    <div class="response-chart">
+      <canvas id="response-chart__base"></canvas>
     </div>
-    <footer>
-      <div class="container footer-content">
-        <p class="deta">
-          Deployed on
-          <a href="https://www.deta.sh/" target="_blank" rel="noopener"
-            >Deta 🚀</a
-          >
-        </p>
-        <nav>
-          <ul class="nav__links">
-            <li>
-              <a
-                href="https://github.com/LemonPi314/deta-status"
-                target="_blank"
-                rel="noopener"
-                >GitHub</a
-              >
-            </li>
-            <li>
-              <a href="https://service-status.deta.dev/api">API</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <p>
-        This service is unofficial and not affiliated with Deta or Abstract
-        Computing UG.
-      </p>
-    </footer>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
-      integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script type="text/javascript" src="/static/script.js?v=1.0.2"></script>
-  </body>
-</html>
+    <p>Uptime tracker</p>
+    <div class="uptime-chart">
+      <canvas id="uptime-chart__base"></canvas>
+    </div>
+    <div class="uptime-chart__footer">
+      <span id="uptime-chart-last__base"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span id="uptime-chart__percentage__base"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span>Now</span>
+    </div>
+  </div>
+
+  <div>
+    <h2>Drive</h2>
+    <div class="avg-response-time">
+      <p>Response time</p>
+      <p id="avg-response-time__drive"></p>
+    </div>
+    <div class="response-chart">
+      <canvas id="response-chart__drive"></canvas>
+    </div>
+    <p>Uptime tracker</p>
+    <div class="uptime-chart">
+      <canvas id="uptime-chart__drive"></canvas>
+    </div>
+    <div class="uptime-chart__footer">
+      <span id="uptime-chart-last__drive"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span id="uptime-chart__percentage__drive"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span>Now</span>
+    </div>
+  </div>
+
+  <div>
+    <h2>Micro</h2>
+    <div class="avg-response-time">
+      <p>Response time</p>
+      <p id="avg-response-time__micro"></p>
+    </div>
+    <div class="response-chart">
+      <canvas id="response-chart__micro"></canvas>
+    </div>
+    <p>Uptime tracker</p>
+    <div class="uptime-chart">
+      <canvas id="uptime-chart__micro"></canvas>
+    </div>
+    <div class="uptime-chart__footer">
+      <span id="uptime-chart-last__micro"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span id="uptime-chart__percentage__micro"></span>
+      <span class="uptime-chart__footer--divider"></span>
+      <span>Now</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+  integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{{ super() }}
+{% endblock %}
