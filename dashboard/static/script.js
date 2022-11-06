@@ -326,7 +326,7 @@ function currentStatusUpdate() {
 
 async function switchRegion(region) {
   urlParams.set("region", region);
-  window.history.pushState({}, "", `?${urlParams}`)
+  window.history.pushState({}, "", `?${urlParams}`);
   await getData(region);
   chartUpdate(dataMargin(), region);
 }
@@ -433,18 +433,9 @@ function uptimeChartFooter(statusData, elementID) {
   document.getElementById(elementID).innerHTML = uptimePercentage + " % uptime";
 }
 
-let baseTimestampLabel = [],
-  baseResponseTime = [],
-  baseUptimeData = [],
-  driveTimestampLabel = [],
-  driveResponseTime = [],
-  driveUptimeData = [],
-  microTimestampLabel = [],
-  microResponseTime = [],
-  microUptimeData = [];
-
-let currentDataMargin = 0;
-let currentSelectedRegion = "";
+window.addEventListener("resize", () => {
+  chartUpdate(dataMargin(), currentSelectedRegion);
+});
 
 const baseResponseChart = responseChart("response-chart__base");
 const driveResponseChart = responseChart("response-chart__drive");
@@ -463,19 +454,22 @@ const chartList = [
   microUptimeChart,
 ];
 
-const regions = [
-  "germany",
-  "india",
-  "singapore",
-  "brazil",
-  "us",
-]
-
-window.addEventListener("resize", () => {
-  chartUpdate(dataMargin(), currentSelectedRegion);
-});
+const regions = ["germany", "india", "singapore", "brazil", "us"];
 
 const urlParams = new URLSearchParams(window.location.search);
+
+let baseTimestampLabel = [],
+  baseResponseTime = [],
+  baseUptimeData = [],
+  driveTimestampLabel = [],
+  driveResponseTime = [],
+  driveUptimeData = [],
+  microTimestampLabel = [],
+  microResponseTime = [],
+  microUptimeData = [];
+
+let currentDataMargin = 0;
+let currentSelectedRegion = "";
 
 if (regions.includes(urlParams.get("region"))) {
   document.getElementById(`radio--${urlParams.get("region")}`).click();
