@@ -31,13 +31,13 @@ async def root():
 
 @app.get('/results/{service}', response_model=list[TestResults])
 async def api_results(response: Response, service: str):
-    if service not in tests.keys():
+    if service not in tests:
         raise HTTPException(status_code=400, detail='invalid service')
     results_base = deta.Base(f'results-{service}')
     results = results_base.fetch().items
     for result in results:
         del result['key']
-    response.headers['Access-Control-Allow-Origin'] = '*'  # FIXME: temporary
+    response.headers['Access-Control-Allow-Origin'] = '*'
     return results
 
 
@@ -48,12 +48,12 @@ async def run_tests():
     coros = []
     timeout = httpx.Timeout(5.0, read=1.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
-        for service in tests.keys():
+        for service in tests:
             coros.append(client.get(f'https://{path}.deta.dev/test/{service}', headers=headers))
         try:
             await asyncio.gather(*coros, return_exceptions=True)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=repr(e))
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=repr(exc)) from exc
 
     # The above code starts new instances of this Micro for each service test
     # by calling this Micro's '/test/{service}' endpoint.
@@ -66,7 +66,7 @@ async def run_tests():
 
 @app.get('/test/{service}', response_model=TestResults, dependencies=[Depends(api_key_auth)])
 async def test(service: str):
-    if service not in tests.keys():
+    if service not in tests:
         raise HTTPException(status_code=404)
     return await tests[service]().run()
 
@@ -77,6 +77,6 @@ async def ping():
 
 
 @app.lib.cron()
-def cron(event: str):
+def cron(_):
     loop = asyncio.new_event_loop()
     loop.run_until_complete(run_tests())

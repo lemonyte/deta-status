@@ -19,5 +19,5 @@ async def api(request: Request):
 
 
 @app.exception_handler(404)
-async def not_found_handler(request: Request, exception):
+async def not_found_handler(request: Request, _):
     return templates.TemplateResponse('404.html', {'request': request})

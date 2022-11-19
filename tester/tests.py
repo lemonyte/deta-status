@@ -21,9 +21,9 @@ def test(func):
             elif not isinstance(details, dict):
                 details = {'value': details}
             passed = True
-        except Exception as e:
+        except Exception as exc:
             passed = False
-            details = {'error': repr(e)}
+            details = {'error': repr(exc)}
         duration = time.perf_counter() - start_time
         return TestResult(
             name=func.__name__.lstrip('test_'),
@@ -95,7 +95,7 @@ class BaseTests(Tests):
         async with httpx.AsyncClient() as client:
             # Ignore the first response time, which is much higher due to intial handshakes.
             await client.get('https://database.deta.sh')
-            for i in range(10):
+            for _ in range(10):
                 response = await client.get('https://database.deta.sh')
                 response_times.append(response.elapsed.total_seconds())
         return {
@@ -167,7 +167,7 @@ class DriveTests(Tests):
         async with httpx.AsyncClient() as client:
             # Ignore the first response time, which is much higher due to intial handshakes.
             await client.get('https://drive.deta.sh')
-            for i in range(10):
+            for _ in range(10):
                 response = await client.get('https://drive.deta.sh')
                 response_times.append(response.elapsed.total_seconds())
         return {
@@ -220,7 +220,7 @@ class MicroTests(Tests):
         async with httpx.AsyncClient() as client:
             # Ignore the first response time, which is much higher due to intial handshakes.
             await client.get(f'https://{path}.deta.dev/ping')
-            for i in range(10):
+            for _ in range(10):
                 response = await client.get(f'https://{path}.deta.dev/ping')
                 response_times.append(response.elapsed.total_seconds())
         return {
