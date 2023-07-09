@@ -1,14 +1,12 @@
 # Deta Status
 
-Service uptime tracker for [Deta](https://deta.sh/).
+> :warning: This status page was created for Deta Cloud, a service which no longer exists as of June 1, 2023.
+
+Service uptime tracker for [Deta Cloud](https://deta.sh/).
 
 ## Requirements
 
 - [Python 3.9](https://www.python.org/downloads/) or higher
-
-## Usage
-
-Usage instructions.
 
 ## Disclaimer
 
