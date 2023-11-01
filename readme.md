@@ -4,6 +4,8 @@
 
 Service uptime tracker for [Deta Cloud](https://deta.sh/).
 
+![Screenshot](https://github.com/lemonyte/deta-status/assets/49930425/f89955f1-54c0-4927-83a5-647238d7e6af)
+
 ## Requirements
 
 - [Python 3.9](https://www.python.org/downloads/) or higher
