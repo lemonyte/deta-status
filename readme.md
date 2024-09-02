@@ -1,6 +1,7 @@
 # Deta Status
 
-> :warning: This status page was created for Deta Cloud, a service which no longer exists as of June 1, 2023.
+> [!IMPORTANT]  
+> This status page was created for Deta Cloud, a service which no longer exists as of June 1, 2023.
 
 Service uptime tracker for [Deta Cloud](https://deta.sh/).
 
